@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:gastosappg14/models/nota_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -30,6 +31,11 @@ class DbNotas {
     db.insert("NOTAS", {"titulo": titulo, "contenido": contenido});
   }
 
+  Future<void> insertarNotaModel(NotaModel notaModel) async {
+    final db = await initDatabase();
+    await db.insert("NOTAS", notaModel.toMap());
+  }
+
   // OBTENER REGISTROS
   Future<List<Map<String, dynamic>>> obtenerNotas() async {
     final db = await initDatabase();
@@ -42,6 +48,15 @@ class DbNotas {
       where: "titulo = 'Tarea2'",
       columns: ["id,contenido"],
     );
+  }
+
+  Future<List<NotaModel>> obtenerNotasModel() async {
+    final db = await initDatabase();
+    List<Map<String, dynamic>> data = await db.query("NOTAS");
+    List<NotaModel> notasModelList = data
+        .map((e) => NotaModel.fromMap(e))
+        .toList();
+    return notasModelList;
   }
 
   // ACTUALIZAR
