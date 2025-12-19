@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gastosappg14/utils/data_general.dart';
 import 'package:gastosappg14/widgets/field_widget.dart.dart';
 import 'package:gastosappg14/widgets/item_type_widget.dart';
 
@@ -40,10 +41,23 @@ class _RegisterModalWidgetState extends State<RegisterModalWidget> {
               print("Mostrar selectet picker");
             },
           ),
-          ItemTypeWidget(
-            data: {"name": "Alimentos", "image": "alimentos"},
-            isSelected: false,
-            tap: () {},
+          SizedBox(height: 16),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: WrapAlignment.center,
+            children: types
+                .map(
+                  (e) => ItemTypeWidget(
+                    data: e,
+                    isSelected: typeSelected == e["name"] ? true : false,
+                    tap: () {
+                      typeSelected = e["name"];
+                      setState(() {});
+                    },
+                  ),
+                )
+                .toList(),
           ),
         ],
       ),
