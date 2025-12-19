@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class FieldWidget extends StatelessWidget {
   final String hintText;
@@ -25,6 +26,9 @@ class FieldWidget extends StatelessWidget {
         keyboardType: isNumberKeyboard
             ? TextInputType.number
             : TextInputType.text,
+        inputFormatters: isNumberKeyboard
+            ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))]
+            : [], //controlamos que solo hayan dos decimales
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.grey.shade200,
