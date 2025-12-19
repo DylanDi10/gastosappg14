@@ -2,9 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:gastosappg14/db/db_notas.dart';
 import 'package:gastosappg14/models/nota_model.dart';
 import 'package:gastosappg14/widgets/custom_card_item.dart';
-import 'package:gastosappg14/widgets/custom_search_input.dart';
+import 'package:gastosappg14/widgets/field_widget.dart.dart';
+import 'package:gastosappg14/widgets/register_modal_widget.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  TextEditingController searchController = TextEditingController();
+
+  void showRegisterModal() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return RegisterModalWidget();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -47,7 +64,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      print("tapeando");
+                      showRegisterModal();
                     },
                     child: Container(
                       color: Colors.black,
@@ -60,7 +77,11 @@ class HomePage extends StatelessWidget {
                           SizedBox(width: 8),
                           Text(
                             "Agregar",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ],
                       ),
@@ -96,11 +117,9 @@ class HomePage extends StatelessWidget {
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: CustomSearchInput(
+                            child: FieldWidget(
+                              controller: searchController,
                               hintText: "Buscar por título",
-                              onChanged: (value) {
-                                print("Buscando: $value");
-                              },
                             ),
                           ),
 
