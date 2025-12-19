@@ -23,8 +23,8 @@ class DbAdminGastos {
       version: 1,
       onCreate: (db, version) {
         db.execute("""CREATE TABLE GASTOS(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT
-                    tittle TEXT,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    title TEXT,
                     price REAL,
                     datetime TEXT,
                     type TEXT

@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:gastosappg14/models/gasto_model.dart';
 
 class CustomCardItem extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String amount;
-  final Widget iconWidget;
+  GastoModel gastoModel;
+  CustomCardItem({required this.gastoModel});
+  // final String title;
+  // final String subtitle;
+  // final String amount;
+  // final Widget iconWidget;
 
-  const CustomCardItem({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.amount,
-    required this.iconWidget,
-  });
+  // const CustomCardItem({
+  //   super.key,
+  //   required this.title,
+  //   required this.subtitle,
+  //   required this.amount,
+  //   required this.iconWidget,
+  // });
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,7 @@ class CustomCardItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  gastoModel.title,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -50,7 +53,7 @@ class CustomCardItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  subtitle,
+                  gastoModel.datetime,
                   style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -60,7 +63,7 @@ class CustomCardItem extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            amount,
+            gastoModel.price.toString(),
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,

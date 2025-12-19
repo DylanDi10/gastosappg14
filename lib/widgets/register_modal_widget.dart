@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gastosappg14/db/db_admin_gastos.dart';
+import 'package:gastosappg14/models/gasto_model.dart';
 import 'package:gastosappg14/utils/data_general.dart';
 import 'package:gastosappg14/widgets/field_widget.dart.dart';
 import 'package:gastosappg14/widgets/item_type_widget.dart';
@@ -22,7 +24,31 @@ class _RegisterModalWidgetState extends State<RegisterModalWidget> {
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-        onPressed: () {},
+        onPressed: () {
+          GastoModel gastoModel = GastoModel(
+            title: titleController.text,
+            price: double.parse(priceController.text),
+            datetime: dateController.text,
+            type: typeSelected,
+          );
+
+          DbAdminGastos().insertarGasto(gastoModel).then((res) {
+            if (res > 0) {
+              // se ha inserado correctamente
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.cyan,
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(16),
+                  ),
+                  content: Text("Se ha registrado correctamente"),
+                ),
+              );
+              Navigator.pop(context);
+            }
+          });
+        },
         child: Text("Añadir", style: TextStyle(color: Colors.white)),
       ),
     );

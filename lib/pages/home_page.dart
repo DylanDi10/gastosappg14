@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gastosappg14/db/db_admin_gastos.dart';
 import 'package:gastosappg14/db/db_notas.dart';
+import 'package:gastosappg14/models/gasto_model.dart';
 import 'package:gastosappg14/models/nota_model.dart';
 import 'package:gastosappg14/widgets/custom_card_item.dart';
 import 'package:gastosappg14/widgets/field_widget.dart.dart';
@@ -12,6 +14,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
+  List<GastoModel> gastosList = [];
+
+  Future<void> getDataFromDB() async {
+    gastosList = await DbAdminGastos().obtenerGastos();
+    setState(() {});
+  }
 
   void showRegisterModal() {
     showModalBottomSheet(
@@ -29,6 +37,13 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDataFromDB();
   }
 
   @override
@@ -132,36 +147,14 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
 
-                          CustomCardItem(
-                            title: "Cine",
-                            subtitle: "2024-11-15 00:00:00.000",
-                            amount: "S/ 50.0",
-                            iconWidget: Icon(
-                              Icons.movie_creation_outlined,
-                              size: 40,
-                              color: Colors.red[300],
-                            ),
-                          ),
-
-                          CustomCardItem(
-                            title: "Curso Codigo",
-                            subtitle: "2024-11-15 00:00:00.000",
-                            amount: "S/ 110.0",
-                            iconWidget: Icon(
-                              Icons.fastfood,
-                              size: 40,
-                              color: Colors.orange[300],
-                            ),
-                          ),
-
-                          CustomCardItem(
-                            title: "Deuda banco",
-                            subtitle: "2024-11-21 00:00:00.000",
-                            amount: "S/ 1582.0",
-                            iconWidget: Icon(
-                              Icons.fastfood,
-                              size: 40,
-                              color: Colors.orange[300],
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: gastosList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return CustomCardItem(
+                                  gastoModel: gastosList[index],
+                                );
+                              },
                             ),
                           ),
                         ],
