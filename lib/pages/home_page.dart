@@ -28,7 +28,6 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         // Cuando usamos forms dentro del shotmodalbotton debemos poner encerrar todo en un pading de la siguiente forma para que no se tape en contenido
-
         return Padding(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -36,7 +35,10 @@ class _HomePageState extends State<HomePage> {
           child: RegisterModalWidget(),
         );
       },
-    );
+    ).then((value) {
+      print("entrooooooooooooooooooooooooooooooooooooooooooo");
+      getDataFromDB();
+    });
   }
 
   @override

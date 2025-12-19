@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gastosappg14/db/db_admin_gastos.dart';
 import 'package:gastosappg14/models/gasto_model.dart';
 import 'package:gastosappg14/utils/data_general.dart';
+import 'package:gastosappg14/utils/utils_functions.dart';
 import 'package:gastosappg14/widgets/field_widget.dart.dart';
 import 'package:gastosappg14/widgets/item_type_widget.dart';
 
@@ -17,6 +18,47 @@ class _RegisterModalWidgetState extends State<RegisterModalWidget> {
   TextEditingController priceController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   String typeSelected = "Alimentos";
+
+  // void showDateTimePicker() async {
+  //   DateTime? datePicker = await showDatePicker(
+  //     context: context,
+  //     firstDate: DateTime(2020),
+  //     lastDate: DateTime(2030),
+  //     initialDate: DateTime.now(),
+  //     builder: (context, child) {
+  //       return Theme(
+  //         data: ThemeData.light().copyWith(
+  //           dialogTheme: DialogThemeData(
+  //             shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadiusGeometry.circular(16),
+  //             ),
+  //           ),
+  //           colorScheme: ColorScheme.light(
+  //             primary: Colors.red, //header y selección
+  //             onPrimary: Colors.white, //texto del header
+  //             onSurface: Colors.black, //teto del calendario
+  //           ),
+  //           textButtonTheme: TextButtonThemeData(
+  //             style: TextButton.styleFrom(foregroundColor: Colors.red),
+  //           ),
+  //         ),
+
+  //         child: child!,
+  //       );
+  //     },
+  //   );
+  //   if (datePicker != null) {
+  //     dateController.text =
+  //         "${datePicker.day}/${datePicker.month}/${datePicker.year}";
+  //   }
+  // }
+
+  void selectDate() async {
+    DateTime? date = await pickDate(context: context);
+    if (date != null) {
+      dateController.text = "${date.day}/${date.month}/${date.year}";
+    }
+  }
 
   Widget _buildAddButton() {
     return SizedBox(
@@ -78,6 +120,8 @@ class _RegisterModalWidgetState extends State<RegisterModalWidget> {
               controller: dateController,
               function: () {
                 print("Mostrar selectet picker");
+                // showDateTimePicker();
+                selectDate();
               },
             ),
             Padding(
