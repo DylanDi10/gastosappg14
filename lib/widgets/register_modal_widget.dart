@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gastosappg14/widgets/field_widget.dart.dart';
+import 'package:gastosappg14/widgets/item_type_widget.dart';
 
 class RegisterModalWidget extends StatefulWidget {
   const RegisterModalWidget({super.key});
@@ -38,6 +39,11 @@ class _RegisterModalWidgetState extends State<RegisterModalWidget> {
             function: () {
               print("Mostrar selectet picker");
             },
+          ),
+          ItemTypeWidget(
+            data: {"name": "Alimentos", "image": "alimentos"},
+            isSelected: false,
+            tap: () {},
           ),
         ],
       ),
