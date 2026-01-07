@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:gastosappg14/models/gasto_model.dart';
+import 'package:gastosappg14/utils/data_general.dart';
 
 class CustomCardItem extends StatelessWidget {
   GastoModel gastoModel;
   CustomCardItem({required this.gastoModel});
-  // final String title;
-  // final String subtitle;
-  // final String amount;
-  // final Widget iconWidget;
-
-  // const CustomCardItem({
-  //   super.key,
-  //   required this.title,
-  //   required this.subtitle,
-  //   required this.amount,
-  //   required this.iconWidget,
-  // });
 
   @override
   Widget build(BuildContext context) {
+    // buscamos la imagen asociada al tipo en data_general (si no hay, usamos 'otros')
+    final tipo = gastoModel.type ?? '';
+    final found = types.firstWhere(
+      (e) => (e['name'] as String).toLowerCase() == tipo.toLowerCase(),
+      orElse: () => {'image': 'otros'},
+    );
+    final imageName = (found['image'] ?? 'otros').toString();
+
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(16.0),
@@ -33,7 +30,7 @@ class CustomCardItem extends StatelessWidget {
             width: 50,
             alignment: Alignment.centerLeft,
             child: Image.asset(
-              "assets/icons/bancos.webp",
+              "assets/icons/$imageName.webp",
               width: 40,
               height: 40,
             ),

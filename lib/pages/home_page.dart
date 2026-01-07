@@ -15,9 +15,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
   List<GastoModel> gastosList = [];
+  List<GastoModel> filteredGastos = [];
 
   Future<void> getDataFromDB() async {
     gastosList = await DbAdminGastos().obtenerGastos();
+    // inicializamos la lista filtrada con todos los gastos
+    filteredGastos = List.from(gastosList);
     setState(() {});
   }
 
@@ -36,52 +39,42 @@ class _HomePageState extends State<HomePage> {
         );
       },
     ).then((value) {
-      print("entrooooooooooooooooooooooooooooooooooooooooooo");
       getDataFromDB();
+    });
+  }
+
+  void _applyFilter() {
+    final q = searchController.text.trim().toLowerCase();
+    setState(() {
+      if (q.isEmpty) {
+        filteredGastos = List.from(gastosList);
+      } else {
+        filteredGastos = gastosList
+            .where((e) => e.title.toLowerCase().contains(q))
+            .toList();
+      }
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getDataFromDB();
+    // Listener sencillo al controller para filtrar por título (contains, case-insensitive)
+    searchController.addListener(_applyFilter);
+  }
+
+  @override
+  void dispose() {
+    searchController.removeListener(_applyFilter);
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () async {
-        //     // DbNotas dbnotas = DbNotas();
-        //     // dbnotas.initDatabase();
-        //     // dbnotas.insertNota("Tarea3", "R4alizar reportes de la investigación");
-        //     // dbnotas.obtenerNotas().then((resultado) => print(resultado));
-        //     // dbnotas.actualizarNota(1, "Contenido actualizado");
-        //     // dbnotas.eliminarNota(1);
-
-        //     // ---------------------- CON MODELOS------------------------
-        //     // dbnotas.insertarNotaModel(
-        //     //   NotaModel(
-        //     //     titulo: "tarea1 Nota model",
-        //     //     contenido:
-        //     //         "Esta es una nota creaada desde una isntancia de Nota model",
-        //     //   ),
-        //     // );
-
-        //     // dbnotas.obtenerNotasModel().then((notas) => print(notas));
-
-        //     // CON PATRÓN SINGLETON
-        //     await DbNotas.instance
-        //         .insertNota("NOTA5", "CONTENIDO DE LA NTOA 5")
-        //         .then((valor) => print(valor));
-        //     await DbNotas.instance
-        //         .actualizarNota(3, "nuevoContenido")
-        //         .then((res) => print(res));
-        //     await DbNotas.instance.obtenerNotas().then((valie) => print(valie));
-        //   },
-        // ),
         body: SafeArea(
           child: Stack(
             children: [
@@ -151,10 +144,10 @@ class _HomePageState extends State<HomePage> {
 
                           Expanded(
                             child: ListView.builder(
-                              itemCount: gastosList.length,
+                              itemCount: filteredGastos.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return CustomCardItem(
-                                  gastoModel: gastosList[index],
+                                  gastoModel: filteredGastos[index],
                                 );
                               },
                             ),
